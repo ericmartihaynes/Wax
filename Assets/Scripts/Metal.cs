@@ -42,7 +42,7 @@ public class Metal : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (isCoin) {
+        if (isCoin && collision.gameObject.tag == "Platform") {
             body.mass = 60; 
         }
     }

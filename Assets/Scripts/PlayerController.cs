@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour
     private bool isFalling = true;
     private GameObject[] metals;
     public float steelBurningRate = 1f;
-    private float equipmentMass = 3.5f;
+    //private float equipmentMass = 3.5f;
     private int bullets = 36;
     private int coins = 10;
     private int metalVials = 3;
