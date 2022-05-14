@@ -2112,7 +2112,7 @@ MonoBehaviour:
   metalBubble: 0
   coinPrefab: {fileID: 2977257485851380747, guid: 58d7783bdfce8b74caa5a80e46ed6de9, type: 3}
   casingPrefab: {fileID: 7400748126460448342, guid: 30d062f9b90cfb1419f17623754e3c33, type: 3}
-  bulletPrefab: {fileID: 3636281404753338083, guid: efe02fb3d65e85e4c8f6062b8ad743f0, type: 3}
+  bulletPrefab: {fileID: 3439415713782435399, guid: 0cf46f2ac7d202d4683edc163ebfda09, type: 3}
   punchPrefab: {fileID: 7918984102485771223, guid: 4084db8563fdd1f4786d27633e5248f1, type: 3}
   textBullets: {fileID: 1784909774}
   textCoins: {fileID: 2032591362}
