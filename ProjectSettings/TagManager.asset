@@ -10,6 +10,7 @@ TagManager:
   - Punch
   - Aluminum
   - EnemyPunch
+  - Background
   layers:
   - Default
   - TransparentFX
