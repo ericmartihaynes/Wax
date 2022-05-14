@@ -7,6 +7,9 @@ TagManager:
   - Platform
   - Metal
   - Enemy
+  - Punch
+  - Aluminum
+  - EnemyPunch
   layers:
   - Default
   - TransparentFX

@@ -17,9 +17,11 @@ public class PlayerController : MonoBehaviour
     private int inputVial = 0;
     private int inputBullet = 0;
     private int inputResetWeight = 0;
+    private int inputPunch = 0;
     public float maxSpeed;
     private bool isFalling = true;
     private GameObject[] metals;
+    private GameObject[] enemies;
     public float steelBurningRate = 1f;
     //private float equipmentMass = 3.5f;
     private int bullets = 36;
@@ -34,6 +36,7 @@ public class PlayerController : MonoBehaviour
     public GameObject coinPrefab;
     public GameObject casingPrefab;
     public GameObject bulletPrefab;
+    public GameObject punchPrefab;
     private int prefabCleaner = 0;
     public Text textBullets;
     public Text textCoins;
@@ -50,6 +53,7 @@ public class PlayerController : MonoBehaviour
     {
         body = GetComponent<Rigidbody2D>();
         metals = GameObject.FindGameObjectsWithTag("Metal");
+        enemies = GameObject.FindGameObjectsWithTag("Enemy");
 
         textBullets.text = bullets.ToString();
         textCoins.text = coins.ToString();
@@ -112,6 +116,11 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown("q"))
         {
             inputVial++;
+        }
+
+        if (Input.GetKeyDown("c"))
+        {
+            inputPunch++;
         }
 
 
@@ -211,6 +220,25 @@ public class PlayerController : MonoBehaviour
                     textMetalReserve.text = metalReserve.ToString();
                 }
             }
+
+            enemies = GameObject.FindGameObjectsWithTag("Enemy");
+            foreach (GameObject enemy in enemies)
+            {
+                Vector2 push = (enemy.transform.position - this.transform.position);
+                if (push.magnitude < 20)
+                { //Range at which push has effect
+                    push = push.normalized * ((20 - push.magnitude) / 20);
+                    Rigidbody2D metalBody = enemy.GetComponent<Rigidbody2D>();
+                    Vector2 push2 = push * steelBurningRate * 5 * -1;
+                    push = push * steelBurningRate * 5;
+                    metalBody.AddForce(push, ForceMode2D.Impulse);
+                    body.AddForce(push2, ForceMode2D.Impulse);
+
+                    metalReserve -= (push.magnitude + push2.magnitude) / 100;
+                    if (metalReserve < 0) { metalReserve = 0; }
+                    textMetalReserve.text = metalReserve.ToString();
+                }
+            }
         }
 
         if (inputResetWeight > 0)
@@ -271,13 +299,28 @@ public class PlayerController : MonoBehaviour
             inputVial = 0;
         }
 
+        if (inputPunch > 0)
+        {
+            Vector2 coinVector = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector2 playerToMouseVector = (coinVector - body.position).normalized / 2;
+            GameObject newPunch = Instantiate(punchPrefab, body.position + playerToMouseVector, Quaternion.identity);
+            newPunch.transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(coinVector.y - transform.position.y, coinVector.x - transform.position.x) * Mathf.Rad2Deg);
+            newPunch.GetComponent<Rigidbody2D>().AddForce(playerToMouseVector * (currentMass / 3), ForceMode2D.Impulse);
+            Destroy(newPunch,0.085f);
+            inputPunch = 0;
+        }
+
         //DONE: simple ui, make weight and metal limited
         //DONE: Add Kinematic metal
         //DONE: Expand test area, fix camera
-        //DONE: Add enemies, enemy health, player health, and physics based damage system
-        //TODO: Add enemy movement, CQC player, CQC enemies, Aluminum enemies, Metal on enemies
+        //DONE: Add enemies, enemy health, player health, and physics based damage system, shooting, random misses
+        //DONE: Add enemy movement, CQC player, CQC enemies, Aluminum enemies, Metal on enemies
         //TODO: Metal push shield ability
-
+        //TODO: Metal vision ability
+        //TODO: Platform that breaks under weight
+        //TODO: Boss Enemy
+        //TODO: Maybe select only one metal
+        
         //TODO: Add textures
         //TODO: Add Animations & sound
         //TODO: Add other things (see itslearning)
@@ -290,7 +333,7 @@ public class PlayerController : MonoBehaviour
             isFalling = false;
         }
 
-        if (collision.gameObject.tag == "Metal")
+        if (collision.gameObject.tag == "Metal" || collision.gameObject.tag == "Aluminum")
         {
             Rigidbody2D rb = collision.gameObject.GetComponent<Rigidbody2D>();
             Vector2 damageVector = rb.velocity * rb.mass - body.velocity * body.mass;
@@ -305,6 +348,15 @@ public class PlayerController : MonoBehaviour
             }
 
 
+        }
+        if (collision.gameObject.tag == "EnemyPunch")
+        {
+            Rigidbody2D rb = collision.gameObject.GetComponent<Rigidbody2D>();
+            Vector2 damageVector = rb.velocity * rb.mass - body.velocity * body.mass;
+            float damage = damageVector.magnitude / Random.Range(5, 30);
+            health -= damage;
+            textHealth.text = health.ToString();
+            
         }
     }
 

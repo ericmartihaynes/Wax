@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class EnemyController : MonoBehaviour
+public class CqcEnemyController : MonoBehaviour
 {
     private Rigidbody2D body;
     private LineRenderer line;
     private float enemyHealth = 100f;
-    private int shootCount = 0;
-    public GameObject bulletPrefab;
+    private int punchCount = 0;
+    public GameObject punchPrefab;
     private GameObject player;
     private bool playerDetected = false;
     private float moveForce;
@@ -29,7 +29,8 @@ public class EnemyController : MonoBehaviour
     void Update()
     {
         Vector2 distance = this.transform.position - player.transform.position;
-        if (enemyHealth < 0) {
+        if (enemyHealth < 0)
+        {
             this.gameObject.SetActive(false);
         }
         if (distance.magnitude < 20)
@@ -51,28 +52,31 @@ public class EnemyController : MonoBehaviour
 
     void FixedUpdate()
     {
-        
+
         Vector2 distance = this.transform.position - player.transform.position;
-        if (shootCount > Random.Range(30, 200) && distance.magnitude < 18)
+        if (distance.magnitude < 18) {
+            playerDetected = true; 
+        }
+        if (punchCount > Random.Range(30, 60) && distance.magnitude < 1.5f)
         {
             playerDetected = true;
             Vector2 playerVector = player.GetComponent<Rigidbody2D>().position;
-            playerVector.x = playerVector.x + Random.Range(-1.5f, 1.5f);
-            playerVector.y = playerVector.y + Random.Range(-1.5f, 1.5f);
             Vector2 playerToMouseVector = (playerVector - body.position).normalized;
-            GameObject newBullet = Instantiate(bulletPrefab, body.position + playerToMouseVector, Quaternion.identity);
-            newBullet.transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(playerVector.y - transform.position.y, playerVector.x - transform.position.x) * Mathf.Rad2Deg);
-            newBullet.GetComponent<Rigidbody2D>().AddForce(playerToMouseVector * 300, ForceMode2D.Impulse);
-            Destroy(newBullet, 0.3f);
+            GameObject newPunch = Instantiate(punchPrefab, body.position + playerToMouseVector, Quaternion.identity);
+            newPunch.transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(playerVector.y - transform.position.y, playerVector.x - transform.position.x) * Mathf.Rad2Deg);
+            newPunch.GetComponent<Rigidbody2D>().AddForce(playerToMouseVector * 30, ForceMode2D.Impulse);
+            Destroy(newPunch, 0.075f);
 
 
-            shootCount = 0;
+            punchCount = 0;
         }
-        else {
-            shootCount++;
+        else
+        {
+            punchCount++;
         }
 
-        if (playerDetected && distance.magnitude > 18 && isFalling == false) {
+        if (playerDetected && distance.magnitude > 1.5f && isFalling == false)
+        {
             int rightOrLeft;
             if (player.transform.position.x - this.transform.position.x < 0) { rightOrLeft = -1; }
             else { rightOrLeft = 1; }
@@ -90,10 +94,11 @@ public class EnemyController : MonoBehaviour
         if (collision.gameObject.tag == "Metal" || collision.gameObject.tag == "Punch")
         {
             Rigidbody2D rb = collision.gameObject.GetComponent<Rigidbody2D>();
-            Vector2 damageVector = rb.velocity*rb.mass - body.velocity*body.mass;
+            Vector2 damageVector = rb.velocity * rb.mass - body.velocity * body.mass;
             enemyHealth -= damageVector.magnitude / Random.Range(5, 30);
             Debug.Log(enemyHealth.ToString());
-            if (rb.mass < 1.1f) {
+            if (rb.mass < 1.1f)
+            {
                 Destroy(collision.gameObject, 0.1f);
             }
 
