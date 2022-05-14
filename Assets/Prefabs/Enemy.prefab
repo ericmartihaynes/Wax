@@ -145,6 +145,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51e9db48cd9485b4db2bdc153dc35221, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bulletPrefab: {fileID: 3636281404753338083, guid: efe02fb3d65e85e4c8f6062b8ad743f0, type: 3}
 --- !u!61 &5646291020591576727
 BoxCollider2D:
   m_ObjectHideFlags: 0

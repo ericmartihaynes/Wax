@@ -30,6 +30,7 @@ public class PlayerController : MonoBehaviour
     private float massReserve = 0;
     private float normalMass = 80;
     private float currentEquipmentMass;
+    private float health = 100;
     public GameObject coinPrefab;
     public GameObject casingPrefab;
     public GameObject bulletPrefab;
@@ -42,6 +43,7 @@ public class PlayerController : MonoBehaviour
     public Text textStoredMass;
     public Text textMetalReserve;
     public Text textHealth;
+    public Text textGameOver;
 
     // Start is called before the first frame update
     void Start()
@@ -54,6 +56,8 @@ public class PlayerController : MonoBehaviour
         textCasings.text = bulletCasings.ToString();
         textVials.text = metalVials.ToString();
         textMetalReserve.text = metalReserve.ToString();
+        textHealth.text = health.ToString();
+        textGameOver.text = "";
 
 
     }
@@ -61,6 +65,12 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //metals = GameObject.FindGameObjectsWithTag("Metal");
+
+        if (health < 0)
+        {
+            textGameOver.text = "Game Over";
+        }
         if (prefabCleaner > 2500)
         {
             metals = GameObject.FindGameObjectsWithTag("Metal");
@@ -262,10 +272,11 @@ public class PlayerController : MonoBehaviour
         }
 
         //DONE: simple ui, make weight and metal limited
-        //TODO: Add Kinematic metal
-        //TODO: Expand test area, fix camera
-        //TODO: Add enemies, enemy health, player health, and physics based damage system
-        //TODO: Metal push shield ability,
+        //DONE: Add Kinematic metal
+        //DONE: Expand test area, fix camera
+        //DONE: Add enemies, enemy health, player health, and physics based damage system
+        //TODO: Add enemy movement, CQC player, CQC enemies, Aluminum enemies, Metal on enemies
+        //TODO: Metal push shield ability
 
         //TODO: Add textures
         //TODO: Add Animations & sound
@@ -277,6 +288,23 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.tag == "Platform" ) {
             isFalling = false;
+        }
+
+        if (collision.gameObject.tag == "Metal")
+        {
+            Rigidbody2D rb = collision.gameObject.GetComponent<Rigidbody2D>();
+            Vector2 damageVector = rb.velocity * rb.mass - body.velocity * body.mass;
+            float damage = damageVector.magnitude / Random.Range(5, 30);
+            if (damage > 10) {
+                health -= damage;
+                textHealth.text = health.ToString();
+            }
+            if (rb.mass < 1.1f)
+            {
+                Destroy(collision.gameObject, 0.1f);
+            }
+
+
         }
     }
 
