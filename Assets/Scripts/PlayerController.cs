@@ -33,6 +33,10 @@ public class PlayerController : MonoBehaviour
     private float normalMass = 80;
     private float currentEquipmentMass;
     private float health = 100;
+    public bool metalVision = false;
+    private bool visionState = false;
+    private bool visionState2 = false;
+    public bool metalBubble = false;
     public GameObject coinPrefab;
     public GameObject casingPrefab;
     public GameObject bulletPrefab;
@@ -123,6 +127,26 @@ public class PlayerController : MonoBehaviour
             inputPunch++;
         }
 
+        if (Input.GetKeyDown("r") && metalReserve > 0)
+        {
+            if (!metalBubble)
+            {
+                metalVision = !metalVision;
+                visionState = !visionState;
+                visionState2 = !visionState2;
+            }
+        }
+        if (Input.GetKeyDown("f") && metalReserve > 0)
+        {
+            metalBubble = !metalBubble;
+            visionState2 = !visionState2;
+            metalVision = true;
+            if (!visionState && !visionState2) { metalVision = visionState; }
+        }
+        if (metalReserve < 0) {
+            metalVision = false;
+            metalBubble = false;
+        }
 
 
     }
@@ -204,6 +228,7 @@ public class PlayerController : MonoBehaviour
         }
 
         if (inputSpace && metalReserve > 0) {
+            metalVision = true;
             metals = GameObject.FindGameObjectsWithTag("Metal");
             foreach (GameObject metal in metals) {
                 Vector2 push = (metal.transform.position - this.transform.position);
@@ -239,6 +264,11 @@ public class PlayerController : MonoBehaviour
                     textMetalReserve.text = metalReserve.ToString();
                 }
             }
+            
+        }
+        else {
+            if (!visionState && !visionState2) { metalVision = visionState; }
+            
         }
 
         if (inputResetWeight > 0)
@@ -309,18 +339,28 @@ public class PlayerController : MonoBehaviour
             Destroy(newPunch,0.085f);
             inputPunch = 0;
         }
+        if (metalVision) {
+            metalReserve -= 0.005f;
+            textMetalReserve.text = metalReserve.ToString();
+        }
+        if (metalBubble)
+        {
+            metalReserve -= 0.1f;
+            textMetalReserve.text = metalReserve.ToString();
+        }
 
         //DONE: simple ui, make weight and metal limited
         //DONE: Add Kinematic metal
         //DONE: Expand test area, fix camera
         //DONE: Add enemies, enemy health, player health, and physics based damage system, shooting, random misses
         //DONE: Add enemy movement, CQC player, CQC enemies, Aluminum enemies, Metal on enemies
-        //TODO: Metal push shield ability
-        //TODO: Metal vision ability
+        //DONE: Metal vision ability
+        //DONE: Metal push shield ability
+        //TODO: Enemy that does not move
         //TODO: Platform that breaks under weight
         //TODO: Boss Enemy
         //TODO: Maybe select only one metal
-        
+
         //TODO: Add textures
         //TODO: Add Animations & sound
         //TODO: Add other things (see itslearning)

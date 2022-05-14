@@ -33,7 +33,7 @@ public class CqcEnemyController : MonoBehaviour
         {
             this.gameObject.SetActive(false);
         }
-        if (distance.magnitude < 20)
+        if (distance.magnitude < 20 && player.GetComponent<PlayerController>().metalVision)
         {
             line.startWidth = 0.05f;
             line.endWidth = 0.05f;

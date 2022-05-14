@@ -22,7 +22,7 @@ public class Metal : MonoBehaviour
     void Update()
     {
         Vector2 distance = this.transform.position - player.transform.position;
-        if (distance.magnitude < 20)
+        if (distance.magnitude < 20 && player.GetComponent<PlayerController>().metalVision)
         {
             line.startWidth = 0.05f;
             line.endWidth = 0.05f;

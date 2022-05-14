@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class EnemyController : MonoBehaviour
+public class StationaryEnemyController : MonoBehaviour
 {
     private Rigidbody2D body;
     private LineRenderer line;
@@ -12,8 +12,6 @@ public class EnemyController : MonoBehaviour
     public GameObject bulletPrefab;
     private GameObject player;
     private bool playerDetected = false;
-    private float moveForce;
-    private bool isFalling = true;
 
     // Start is called before the first frame update
     void Start()
@@ -21,7 +19,6 @@ public class EnemyController : MonoBehaviour
         line = GetComponent<LineRenderer>();
         body = GetComponent<Rigidbody2D>();
         player = GameObject.FindGameObjectWithTag("Player");
-        moveForce = ((0.75f * body.mass) + 20f) / 4;
 
     }
 
@@ -29,7 +26,8 @@ public class EnemyController : MonoBehaviour
     void Update()
     {
         Vector2 distance = this.transform.position - player.transform.position;
-        if (enemyHealth < 0) {
+        if (enemyHealth < 0)
+        {
             this.gameObject.SetActive(false);
         }
         if (distance.magnitude < 20 && player.GetComponent<PlayerController>().metalVision)
@@ -51,7 +49,7 @@ public class EnemyController : MonoBehaviour
 
     void FixedUpdate()
     {
-        
+
         Vector2 distance = this.transform.position - player.transform.position;
         if (shootCount > Random.Range(30, 200) && distance.magnitude < 18)
         {
@@ -68,32 +66,29 @@ public class EnemyController : MonoBehaviour
 
             shootCount = 0;
         }
-        else {
+        else
+        {
             shootCount++;
         }
 
-        if (playerDetected && distance.magnitude > 18 && isFalling == false) {
-            int rightOrLeft;
-            if (player.transform.position.x - this.transform.position.x < 0) { rightOrLeft = -1; }
-            else { rightOrLeft = 1; }
-            body.AddForce(new Vector2(rightOrLeft * moveForce, 0f), ForceMode2D.Impulse);
+        if (playerDetected && distance.magnitude > 18)
+        {
+            playerDetected = false;
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Platform")
-        {
-            isFalling = false;
-        }
+        
 
         if (collision.gameObject.tag == "Metal" || collision.gameObject.tag == "Punch")
         {
             Rigidbody2D rb = collision.gameObject.GetComponent<Rigidbody2D>();
-            Vector2 damageVector = rb.velocity*rb.mass - body.velocity*body.mass;
+            Vector2 damageVector = rb.velocity * rb.mass - body.velocity * body.mass;
             enemyHealth -= damageVector.magnitude / Random.Range(5, 30);
             Debug.Log(enemyHealth.ToString());
-            if (rb.mass < 1.1f) {
+            if (rb.mass < 1.1f)
+            {
                 Destroy(collision.gameObject, 0.1f);
             }
 
@@ -101,11 +96,5 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.gameObject.tag == "Platform")
-        {
-            isFalling = true;
-        }
-    }
+    
 }
