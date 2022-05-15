@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D body;
     public float moveForce;
     public float jumpForce;
-    public bool isJumping;//!!!
+    public bool isJumping; //!!!
     private float inputHorizontal;
     private float inputVertical;
     private float inputScroll;
@@ -22,7 +22,9 @@ public class PlayerController : MonoBehaviour
     private bool isFalling = true;
     private GameObject[] metals;
     private GameObject[] enemies;
+
     public float steelBurningRate = 1f;
+
     //private float equipmentMass = 3.5f;
     private int bullets = 36;
     private int coins = 10;
@@ -52,6 +54,7 @@ public class PlayerController : MonoBehaviour
     public Text textHealth;
     public Text textGameOver;
     public Animator animator;
+    private AudioSource[] audioS;
     private int movingDirection;
     private bool jumped = false;
 
@@ -62,6 +65,7 @@ public class PlayerController : MonoBehaviour
         metals = GameObject.FindGameObjectsWithTag("Metal");
         enemies = GameObject.FindGameObjectsWithTag("Enemy");
         animator = GetComponent<Animator>();
+        audioS = GetComponents<AudioSource>();
 
         textBullets.text = bullets.ToString();
         textCoins.text = coins.ToString();
@@ -70,8 +74,6 @@ public class PlayerController : MonoBehaviour
         textMetalReserve.text = metalReserve.ToString();
         textHealth.text = health.ToString();
         textGameOver.text = "";
-
-
     }
 
     // Update is called once per frame
@@ -82,50 +84,77 @@ public class PlayerController : MonoBehaviour
         if (health < 0)
         {
             health = 10000000000000000000;
+            SoundManagerScript.playSound("death");
             textGameOver.text = "Game Over";
             animator.SetTrigger("Dead");
         }
+
         if (prefabCleaner > 2500)
         {
             metals = GameObject.FindGameObjectsWithTag("Metal");
             foreach (GameObject metal in metals)
             {
-
                 if (metal.GetComponent<Metal>().isCoin)
                 {
                     Vector2 distance = metal.transform.position - this.transform.position;
                     if (distance.magnitude > 50)
                     {
                         Destroy(metal, 1);
-                        
                     }
                 }
             }
 
             prefabCleaner = 0;
         }
-        else { prefabCleaner++; }
+        else
+        {
+            prefabCleaner++;
+        }
 
         inputHorizontal = Input.GetAxisRaw("Horizontal");
-        if (inputHorizontal < 0) { movingDirection = -1;  animator.SetInteger("Walking", movingDirection); }
-        else if (inputHorizontal > 0) { movingDirection = 1;  animator.SetInteger("Walking", movingDirection); }
-        else { movingDirection = 0;  animator.SetInteger("Walking", movingDirection); }
+        if (inputHorizontal < 0)
+        {
+            movingDirection = -1;
+            animator.SetInteger("Walking", movingDirection);
+            sounds(0);
+        }
+        else if (inputHorizontal > 0)
+        {
+            movingDirection = 1;
+            animator.SetInteger("Walking", movingDirection);
+            sounds(0);
+        }
+        else
+        {
+            movingDirection = 0;
+            animator.SetInteger("Walking", movingDirection);
+            sounds(0);
+        }
 
 
         inputVertical = Input.GetAxisRaw("Vertical");
-        if (inputVertical != 0 && !jumped) { animator.SetTrigger("Jump"); jumped = true; animator.SetBool("Falling", true);}
+        if (inputVertical != 0 && !jumped)
+        {
+            animator.SetTrigger("Jump");
+            jumped = true;
+            animator.SetBool("Falling", true);
+        }
+
         inputScroll += Input.GetAxis("Mouse ScrollWheel");
         inputSpace = Input.GetButton("Jump");
+        sounds(1);
         if (Input.GetButtonDown("Fire1"))
         {
             inputBullet++;
         }
+
         if (Input.GetButtonDown("Fire3"))
         {
             inputResetWeight++;
         }
 
-        if (Input.GetKeyDown("e")) {
+        if (Input.GetKeyDown("e"))
+        {
             inputCoin++;
         }
 
@@ -148,24 +177,49 @@ public class PlayerController : MonoBehaviour
                 visionState2 = !visionState2;
             }
         }
+
         if (Input.GetKeyDown("f") && metalReserve > 0)
         {
             metalBubble = !metalBubble;
             visionState2 = !visionState2;
             metalVision = true;
-            if (!visionState && !visionState2) { metalVision = visionState; }
+            if (!visionState && !visionState2)
+            {
+                metalVision = visionState;
+            }
         }
-        if (metalReserve < 0) {
+
+        if (metalReserve < 0)
+        {
             metalVision = false;
             metalBubble = false;
         }
+    }
 
-
+    private void sounds(int i)
+    {
+        if (movingDirection != 0 && i == 0)
+        {
+            if (!audioS[i].isPlaying)
+            {
+                audioS[i].Play();
+            }
+        }
+        else if (inputSpace && i == 1)
+        {
+            if (!audioS[i].isPlaying)
+            {
+                audioS[i].Play();
+            }
+        }
+        else
+        {
+            audioS[i].Stop();
+        }
     }
 
     void FixedUpdate()
     {
-        
         GetComponent<Rigidbody2D>().mass -= currentEquipmentMass;
         float currentMass = GetComponent<Rigidbody2D>().mass;
         //currentEquipmentMass = equipmentMass + bullets * 0.007f + coins * 0.005f + metalVials * 0.05f + bulletCasings * 0.004f;
@@ -186,15 +240,20 @@ public class PlayerController : MonoBehaviour
             }
             else if (newMass > normalMass + currentEquipmentMass + 1f)
             {
-                if (newMass > 8000f) { newMass = 8000f; }
+                if (newMass > 8000f)
+                {
+                    newMass = 8000f;
+                }
+
                 GetComponent<Rigidbody2D>().mass = newMass;
                 massReserve -= ((newMass) - normalMass) / 1000;
-
             }
-            else {
+            else
+            {
                 GetComponent<Rigidbody2D>().mass = newMass;
             }
         }
+
         if (massReserve < 0)
         {
             GetComponent<Rigidbody2D>().mass = normalMass + currentEquipmentMass;
@@ -204,13 +263,14 @@ public class PlayerController : MonoBehaviour
         textStoredMass.text = massReserve.ToString();
         textCurrentMass.text = GetComponent<Rigidbody2D>().mass.ToString();
         inputScroll = 0;
-        if (isFalling){
+        if (isFalling)
+        {
             GetComponent<Rigidbody2D>().drag = 0.5f;
         }
-        else {
+        else
+        {
             GetComponent<Rigidbody2D>().drag = 4;
         }
-
 
 
         //Equation of mass to movement force y=0.75x+20
@@ -220,32 +280,35 @@ public class PlayerController : MonoBehaviour
 
         if (inputHorizontal != 0f && !isFalling && body.velocity.magnitude < maxSpeed)
         {
-            
             body.AddForce(new Vector2(inputHorizontal * moveForce, 0f), ForceMode2D.Impulse);
+            SoundManagerScript.playSound("walk");
             if (body.velocity.magnitude > maxSpeed)
             {
                 body.velocity = Vector2.ClampMagnitude(body.velocity, maxSpeed);
             }
-
         }
-        
+
         if (inputVertical != 0f && !isFalling)
         {
             body.AddForce(new Vector2(0f, inputVertical * jumpForce), ForceMode2D.Impulse);
             //might need to be fixed for situations where the player is moved by external force and jumps
+            SoundManagerScript.playSound("jump");
             if (body.velocity.magnitude > maxSpeed + 2)
             {
                 body.velocity = new Vector2(body.velocity.x, maxSpeed);
-                
             }
         }
 
-        if (inputSpace && metalReserve > 0) {
+        if (inputSpace && metalReserve > 0)
+        {
             metalVision = true;
             metals = GameObject.FindGameObjectsWithTag("Metal");
-            foreach (GameObject metal in metals) {
+            foreach (GameObject metal in metals)
+            {
                 Vector2 push = (metal.transform.position - this.transform.position);
-                if (push.magnitude < 20) { //Range at which push has effect
+                if (push.magnitude < 20)
+                {
+                    //Range at which push has effect
                     push = push.normalized * ((20 - push.magnitude) / 20);
                     Rigidbody2D metalBody = metal.GetComponent<Rigidbody2D>();
                     Vector2 push2 = push * steelBurningRate * metalBody.mass * -1;
@@ -254,7 +317,11 @@ public class PlayerController : MonoBehaviour
                     body.AddForce(push2, ForceMode2D.Impulse);
 
                     metalReserve -= (push.magnitude + push2.magnitude) / 100;
-                    if (metalReserve < 0 ) { metalReserve = 0; }
+                    if (metalReserve < 0)
+                    {
+                        metalReserve = 0;
+                    }
+
                     textMetalReserve.text = metalReserve.ToString();
                 }
             }
@@ -264,7 +331,8 @@ public class PlayerController : MonoBehaviour
             {
                 Vector2 push = (enemy.transform.position - this.transform.position);
                 if (push.magnitude < 20)
-                { //Range at which push has effect
+                {
+                    //Range at which push has effect
                     push = push.normalized * ((20 - push.magnitude) / 20);
                     Rigidbody2D metalBody = enemy.GetComponent<Rigidbody2D>();
                     Vector2 push2 = push * steelBurningRate * 5 * -1;
@@ -273,15 +341,23 @@ public class PlayerController : MonoBehaviour
                     body.AddForce(push2, ForceMode2D.Impulse);
 
                     metalReserve -= (push.magnitude + push2.magnitude) / 100;
-                    if (metalReserve < 0) { metalReserve = 0; }
+                    if (metalReserve < 0)
+                    {
+                        metalReserve = 0;
+                    }
+
                     textMetalReserve.text = metalReserve.ToString();
                 }
             }
-            
+
+            SoundManagerScript.playSound("metalPower");
         }
-        else {
-            if (!visionState && !visionState2) { metalVision = visionState; }
-            
+        else
+        {
+            if (!visionState && !visionState2)
+            {
+                metalVision = visionState;
+            }
         }
 
         if (inputResetWeight > 0)
@@ -297,16 +373,19 @@ public class PlayerController : MonoBehaviour
             Vector2 playerToMouseVector = (coinVector - body.position).normalized;
             float angle = Vector2.SignedAngle(body.position, coinVector);
             GameObject newBullet = Instantiate(bulletPrefab, body.position + playerToMouseVector, Quaternion.identity);
-            newBullet.transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(coinVector.y - transform.position.y, coinVector.x - transform.position.x) * Mathf.Rad2Deg);
+            newBullet.transform.rotation = Quaternion.Euler(0, 0,
+                Mathf.Atan2(coinVector.y - transform.position.y, coinVector.x - transform.position.x) * Mathf.Rad2Deg);
             newBullet.GetComponent<Rigidbody2D>().AddForce(playerToMouseVector * 300, ForceMode2D.Impulse);
             body.AddForce(playerToMouseVector * -10, ForceMode2D.Impulse);
             metals = GameObject.FindGameObjectsWithTag("Metal");
             bullets--;
+            SoundManagerScript.playSound("fire");
             bulletCasings++;
             textBullets.text = bullets.ToString();
             textCasings.text = bulletCasings.ToString();
             inputBullet = 0;
             inputCoin = 0; //Dont know why but if I remove this random casing appears
+<<<<<<< Updated upstream
             //animator.SetInteger("Walking", 0);
             switch (angle) {
                 case float n when (0 < n && n < 16): animator.SetTrigger("shootLeft5"); break;
@@ -319,32 +398,78 @@ public class PlayerController : MonoBehaviour
                 case float n when (-110 < n && n < -72): animator.SetTrigger("shootRight3"); break;
                 case float n when (-150 < n && n < -110): animator.SetTrigger("shootRight2"); break;
                 case float n when (-180 < n && n < -150): animator.SetTrigger("shootRight1"); break;
+=======
+            animator.SetInteger("Walking", 0);
+            switch (angle)
+            {
+                case float n when (0 < n && n < 16):
+                    print("");
+                    animator.SetTrigger("shootLeft5");
+                    break;
+                case float n when (16 < n && n < 72):
+                    print("");
+                    animator.SetTrigger("shootLeft4");
+                    break;
+                case float n when (72 < n && n < 110):
+                    print("");
+                    animator.SetTrigger("shootLeft3");
+                    break;
+                case float n when (110 < n && n < 150):
+                    print("");
+                    animator.SetTrigger("shootLeft2");
+                    break;
+                case float n when (150 < n && n < 180):
+                    print("");
+                    animator.SetTrigger("shootLeft1");
+                    break;
+                case float n when (-16 < n && n < 0):
+                    print("");
+                    animator.SetTrigger("shootRight5");
+                    break;
+                case float n when (-72 < n && n < -16):
+                    print("");
+                    animator.SetTrigger("shootRight4");
+                    break;
+                case float n when (-110 < n && n < -72):
+                    print("");
+                    animator.SetTrigger("shootRight3");
+                    break;
+                case float n when (-150 < n && n < -110):
+                    print("");
+                    animator.SetTrigger("shootRight2");
+                    break;
+                case float n when (-180 < n && n < -150):
+                    print("");
+                    animator.SetTrigger("shootRight1");
+                    break;
+>>>>>>> Stashed changes
             }
-
         }
 
         if (inputCoin > 0 && (coins > 0 || bulletCasings > 0))
         {
-            
             Vector2 coinVector = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector2 playerToMouseVector = (coinVector - body.position).normalized;
             GameObject newCoin;
-            if (bulletCasings > 0) {
+            if (bulletCasings > 0)
+            {
                 newCoin = Instantiate(casingPrefab, body.position + playerToMouseVector, Quaternion.identity);
                 bulletCasings--;
+                SoundManagerScript.playSound("dropCasing");
                 textCasings.text = bulletCasings.ToString();
             }
-            else {
+            else
+            {
                 newCoin = Instantiate(coinPrefab, body.position + playerToMouseVector, Quaternion.identity);
                 coins--;
+                SoundManagerScript.playSound("dropCoin");
                 textCoins.text = coins.ToString();
             }
-            
+
             newCoin.GetComponent<Rigidbody2D>().AddTorque(0.5f);
             newCoin.GetComponent<Rigidbody2D>().AddForce(playerToMouseVector * 3, ForceMode2D.Impulse);
             metals = GameObject.FindGameObjectsWithTag("Metal");
             inputCoin = 0;
-            
         }
 
         if (inputVial > 0 && metalVials > 0 && metalReserve < 1000)
@@ -361,15 +486,20 @@ public class PlayerController : MonoBehaviour
             Vector2 coinVector = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector2 playerToMouseVector = (coinVector - body.position).normalized / 2;
             GameObject newPunch = Instantiate(punchPrefab, body.position + playerToMouseVector, Quaternion.identity);
-            newPunch.transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(coinVector.y - transform.position.y, coinVector.x - transform.position.x) * Mathf.Rad2Deg);
+            newPunch.transform.rotation = Quaternion.Euler(0, 0,
+                Mathf.Atan2(coinVector.y - transform.position.y, coinVector.x - transform.position.x) * Mathf.Rad2Deg);
             newPunch.GetComponent<Rigidbody2D>().AddForce(playerToMouseVector * (currentMass / 3), ForceMode2D.Impulse);
-            Destroy(newPunch,0.085f);
+            Destroy(newPunch, 0.085f);
+            SoundManagerScript.playSound("punch");
             inputPunch = 0;
         }
-        if (metalVision) {
+
+        if (metalVision)
+        {
             metalReserve -= 0.005f;
             textMetalReserve.text = metalReserve.ToString();
         }
+
         if (metalBubble)
         {
             metalReserve -= 0.1f;
@@ -399,7 +529,8 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Platform" ) {
+        if (collision.gameObject.tag == "Platform")
+        {
             isFalling = false;
             jumped = false;
             animator.SetBool("Falling", false);
@@ -410,25 +541,27 @@ public class PlayerController : MonoBehaviour
             Rigidbody2D rb = collision.gameObject.GetComponent<Rigidbody2D>();
             Vector2 damageVector = rb.velocity * rb.mass - body.velocity * body.mass;
             float damage = damageVector.magnitude / Random.Range(5, 30);
-            if (damage > 10) {
+            if (damage > 10)
+            {
                 health -= damage;
+                SoundManagerScript.playSound("hurt");
                 textHealth.text = health.ToString();
             }
+
             if (rb.mass < 1.1f)
             {
                 Destroy(collision.gameObject, 0.1f);
             }
-
-
         }
+
         if (collision.gameObject.tag == "EnemyPunch")
         {
             Rigidbody2D rb = collision.gameObject.GetComponent<Rigidbody2D>();
             Vector2 damageVector = rb.velocity * rb.mass - body.velocity * body.mass;
             float damage = damageVector.magnitude / Random.Range(5, 30);
             health -= damage;
+            SoundManagerScript.playSound("hurt");
             textHealth.text = health.ToString();
-            
         }
     }
 
