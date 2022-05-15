@@ -356,13 +356,16 @@ public class PlayerController : MonoBehaviour
         //DONE: Add enemy movement, CQC player, CQC enemies, Aluminum enemies, Metal on enemies
         //DONE: Metal vision ability
         //DONE: Metal push shield ability
-        //TODO: Enemy that does not move
+        //DONE: Enemy that does not move
+        //TODO: Player and enemy sprites and animations
+        //TODO: Health to 0 if you fall too far
+        //TODO: Enemies drop items
+        //TODO: Sounds
+        //TODO: Improve UI
         //TODO: Platform that breaks under weight
         //TODO: Boss Enemy
         //TODO: Maybe select only one metal
 
-        //TODO: Add textures
-        //TODO: Add Animations & sound
         //TODO: Add other things (see itslearning)
         //TODO: Refactor
     }
