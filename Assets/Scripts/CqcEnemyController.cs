@@ -66,7 +66,7 @@ public class CqcEnemyController : MonoBehaviour
             newPunch.transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(playerVector.y - transform.position.y, playerVector.x - transform.position.x) * Mathf.Rad2Deg);
             newPunch.GetComponent<Rigidbody2D>().AddForce(playerToMouseVector * 30, ForceMode2D.Impulse);
             Destroy(newPunch, 0.075f);
-
+            SoundManagerScript.playSound("punch");
 
             punchCount = 0;
         }
@@ -96,6 +96,7 @@ public class CqcEnemyController : MonoBehaviour
             Rigidbody2D rb = collision.gameObject.GetComponent<Rigidbody2D>();
             Vector2 damageVector = rb.velocity * rb.mass - body.velocity * body.mass;
             enemyHealth -= damageVector.magnitude / Random.Range(5, 30);
+            SoundManagerScript.playSound("hitmarker");
             Debug.Log(enemyHealth.ToString());
             if (rb.mass < 1.1f)
             {

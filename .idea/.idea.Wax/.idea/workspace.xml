@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6059f18a-3bb2-493b-a97f-4c4da28042a5" name="Changes" comment="" />
+    <list default="true" id="6059f18a-3bb2-493b-a97f-4c4da28042a5" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Level1.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Level1.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/TestLevel.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/TestLevel.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/TestLevelTextures.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/TestLevelTextures.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/CqcEnemyController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/CqcEnemyController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/CqcEnemyController.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/CqcEnemyController.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/EnemyController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/EnemyController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/EnemyController.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/EnemyController.cs.meta" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -56,6 +64,7 @@
       <updated>1652378670283</updated>
       <workItem from="1652378674629" duration="2000" />
       <workItem from="1652428317872" duration="263000" />
+      <workItem from="1652649529696" duration="711000" />
     </task>
     <servers />
   </component>
