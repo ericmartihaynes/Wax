@@ -51,6 +51,9 @@ public class PlayerController : MonoBehaviour
     public Text textMetalReserve;
     public Text textHealth;
     public Text textGameOver;
+    public Animator animator;
+    private int movingDirection;
+    private bool jumped = false;
 
     // Start is called before the first frame update
     void Start()
@@ -58,6 +61,7 @@ public class PlayerController : MonoBehaviour
         body = GetComponent<Rigidbody2D>();
         metals = GameObject.FindGameObjectsWithTag("Metal");
         enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        animator = GetComponent<Animator>();
 
         textBullets.text = bullets.ToString();
         textCoins.text = coins.ToString();
@@ -77,7 +81,9 @@ public class PlayerController : MonoBehaviour
 
         if (health < 0)
         {
+            health = 10000000000000000000;
             textGameOver.text = "Game Over";
+            animator.SetTrigger("Dead");
         }
         if (prefabCleaner > 2500)
         {
@@ -101,7 +107,13 @@ public class PlayerController : MonoBehaviour
         else { prefabCleaner++; }
 
         inputHorizontal = Input.GetAxisRaw("Horizontal");
+        if (inputHorizontal < 0) { movingDirection = -1;  animator.SetInteger("Walking", movingDirection); }
+        else if (inputHorizontal > 0) { movingDirection = 1;  animator.SetInteger("Walking", movingDirection); }
+        else { movingDirection = 0;  animator.SetInteger("Walking", movingDirection); }
+
+
         inputVertical = Input.GetAxisRaw("Vertical");
+        if (inputVertical != 0 && !jumped) { animator.SetTrigger("Jump"); jumped = true; animator.SetBool("Falling", true);}
         inputScroll += Input.GetAxis("Mouse ScrollWheel");
         inputSpace = Input.GetButton("Jump");
         if (Input.GetButtonDown("Fire1"))
@@ -208,12 +220,13 @@ public class PlayerController : MonoBehaviour
 
         if (inputHorizontal != 0f && !isFalling && body.velocity.magnitude < maxSpeed)
         {
+            
             body.AddForce(new Vector2(inputHorizontal * moveForce, 0f), ForceMode2D.Impulse);
             if (body.velocity.magnitude > maxSpeed)
             {
                 body.velocity = Vector2.ClampMagnitude(body.velocity, maxSpeed);
             }
-            
+
         }
         
         if (inputVertical != 0f && !isFalling)
@@ -282,6 +295,7 @@ public class PlayerController : MonoBehaviour
         {
             Vector2 coinVector = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector2 playerToMouseVector = (coinVector - body.position).normalized;
+            float angle = Vector2.SignedAngle(body.position, coinVector);
             GameObject newBullet = Instantiate(bulletPrefab, body.position + playerToMouseVector, Quaternion.identity);
             newBullet.transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(coinVector.y - transform.position.y, coinVector.x - transform.position.x) * Mathf.Rad2Deg);
             newBullet.GetComponent<Rigidbody2D>().AddForce(playerToMouseVector * 300, ForceMode2D.Impulse);
@@ -293,6 +307,19 @@ public class PlayerController : MonoBehaviour
             textCasings.text = bulletCasings.ToString();
             inputBullet = 0;
             inputCoin = 0; //Dont know why but if I remove this random casing appears
+            animator.SetInteger("Walking", 0);
+            switch (angle) {
+                case float n when (0 < n && n < 16): print(""); animator.SetTrigger("shootLeft5"); break;
+                case float n when (16 < n && n <72): print(""); animator.SetTrigger("shootLeft4"); break;
+                case float n when (72 < n && n < 110): print(""); animator.SetTrigger("shootLeft3"); break;
+                case float n when (110 < n && n < 150): print(""); animator.SetTrigger("shootLeft2"); break;
+                case float n when (150 < n && n < 180): print(""); animator.SetTrigger("shootLeft1"); break;
+                case float n when (-16 < n && n < 0): print(""); animator.SetTrigger("shootRight5"); break;
+                case float n when (-72 < n && n < -16): print(""); animator.SetTrigger("shootRight4"); break;
+                case float n when (-110 < n && n < -72): print(""); animator.SetTrigger("shootRight3"); break;
+                case float n when (-150 < n && n < -110): print(""); animator.SetTrigger("shootRight2"); break;
+                case float n when (-180 < n && n < -150): print(""); animator.SetTrigger("shootRight1"); break;
+            }
 
         }
 
@@ -374,6 +401,8 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.tag == "Platform" ) {
             isFalling = false;
+            jumped = false;
+            animator.SetBool("Falling", false);
         }
 
         if (collision.gameObject.tag == "Metal" || collision.gameObject.tag == "Aluminum")
