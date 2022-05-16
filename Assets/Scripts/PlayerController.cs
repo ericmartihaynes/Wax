@@ -51,7 +51,7 @@ public class PlayerController : MonoBehaviour
     public Text textCasings;
     public Text textVials;
     public Text textCurrentMass;
-    public Text textGameOver;
+    //public Text textGameOver;
     public Animator animator;
     private AudioSource[] audioS;
     private int movingDirection;
@@ -64,6 +64,8 @@ public class PlayerController : MonoBehaviour
     public GameObject iconBubble;
     public GameObject iconMetal;
     public GameObject iconWeight;
+    public GameOverScript gameOver;
+    private bool gameover = false;
 
     // Start is called before the first frame update
     void Start()
@@ -81,9 +83,13 @@ public class PlayerController : MonoBehaviour
         textCoins.text = coins.ToString();
         textCasings.text = bulletCasings.ToString();
         textVials.text = metalVials.ToString();
-        textGameOver.text = "";
+        
     }
 
+    private void GameOver()
+    {
+        gameOver.Setup();
+    }
     // Update is called once per frame
     void Update()
     {
@@ -93,12 +99,13 @@ public class PlayerController : MonoBehaviour
         else { iconBubble.GetComponent<Image>().color = new Color(1f, 1f, 1f); }
 
         healthBar.SetValue(health);
-        if (health < 0 || (this.transform.position.y < -50) && (this.transform.position.y > -51))
+        if (!gameover && health < 0 || (this.transform.position.y < -50) && (this.transform.position.y > -51))
         {
-            health = 10000000000000000000;
+            gameover = true;
+           // health = 10000000000000000000;
+           animator.SetTrigger("Dead");
             SoundManagerScript.playSound("death");
-            textGameOver.text = "Game Over";
-            animator.SetTrigger("Dead");
+            Invoke("GameOver",3f);
         }
 
         if (prefabCleaner > 2500)
