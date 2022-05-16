@@ -6,7 +6,7 @@ namespace DefaultNamespace
     public class VolumeManager
     {
         private AudioSource audio;
-        public float volume;
+        public float volume = 1f;
         
         VolumeManager(AudioSource audio, float volume)
         {
