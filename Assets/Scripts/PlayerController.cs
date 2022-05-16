@@ -59,7 +59,7 @@ public class PlayerController : MonoBehaviour
     private int movingDirection;
     private bool jumped = false;
     private VolumeManager vol;
-    public Bars bars;
+    public Bars healthBar;
 
     // Start is called before the first frame update
     void Start()
@@ -556,7 +556,7 @@ public class PlayerController : MonoBehaviour
                 health -= damage;
                 SoundManagerScript.playSound("hurt");
                 textHealth.text = health.ToString();
-                bars.SetHealth(health);
+                healthBar.SetHealth(health);
             }
 
             
@@ -570,7 +570,7 @@ public class PlayerController : MonoBehaviour
             health -= damage;
             SoundManagerScript.playSound("hurt");
             textHealth.text = health.ToString();
-            bars.SetHealth(health);
+            healthBar.SetHealth(health);
         }
     }
 
