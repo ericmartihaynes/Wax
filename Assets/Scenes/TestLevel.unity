@@ -1963,6 +1963,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 986831208}
     - target: {fileID: 2541787514278223378, guid: 9c895af252a2a3e46bc378232d0d503b, type: 3}
+      propertyPath: iconMetal
+      value: 
+      objectReference: {fileID: 425758830}
+    - target: {fileID: 2541787514278223378, guid: 9c895af252a2a3e46bc378232d0d503b, type: 3}
       propertyPath: textCoins
       value: 
       objectReference: {fileID: 2032591362}
@@ -1975,9 +1979,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1234101939}
     - target: {fileID: 2541787514278223378, guid: 9c895af252a2a3e46bc378232d0d503b, type: 3}
+      propertyPath: iconBubble
+      value: 
+      objectReference: {fileID: 1611359928}
+    - target: {fileID: 2541787514278223378, guid: 9c895af252a2a3e46bc378232d0d503b, type: 3}
       propertyPath: iconVision
       value: 
       objectReference: {fileID: 736383086}
+    - target: {fileID: 2541787514278223378, guid: 9c895af252a2a3e46bc378232d0d503b, type: 3}
+      propertyPath: iconWeight
+      value: 
+      objectReference: {fileID: 234530839}
     - target: {fileID: 2541787514278223378, guid: 9c895af252a2a3e46bc378232d0d503b, type: 3}
       propertyPath: textBullets
       value: 

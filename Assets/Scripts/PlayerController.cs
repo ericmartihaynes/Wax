@@ -61,6 +61,9 @@ public class PlayerController : MonoBehaviour
     public Bars metalBar;
     public Bars weightBar;
     public GameObject iconVision;
+    public GameObject iconBubble;
+    public GameObject iconMetal;
+    public GameObject iconWeight;
 
     // Start is called before the first frame update
     void Start()
@@ -86,6 +89,9 @@ public class PlayerController : MonoBehaviour
     {
         if (metalVision) { iconVision.GetComponent<Image>().color = new Color(0.5f, 0.92f, 1f); }
         else { iconVision.GetComponent<Image>().color = new Color(1f, 1f, 1f); }
+        if (metalBubble) { iconBubble.GetComponent<Image>().color = new Color(0.5f, 0.92f, 1f); }
+        else { iconBubble.GetComponent<Image>().color = new Color(1f, 1f, 1f); }
+
         healthBar.SetValue(health);
         if (health < 0)
         {
@@ -147,6 +153,9 @@ public class PlayerController : MonoBehaviour
         }
         
         inputScroll += Input.GetAxis("Mouse ScrollWheel");
+        if (inputScroll < 0) { iconWeight.GetComponent<Image>().color = new Color(0.5f, 0.92f, 1f); }
+        else if (inputScroll > 0) { iconWeight.GetComponent<Image>().color = new Color(1f, 0.5f, 0.5f); }
+        else if (GetComponent<Rigidbody2D>().mass == 84) { iconWeight.GetComponent<Image>().color = new Color(1f, 1f, 1f); }
         inputSpace = Input.GetButton("Jump");
         sounds(1);
         if (Input.GetButtonDown("Fire1"))
@@ -354,8 +363,9 @@ public class PlayerController : MonoBehaviour
                     metalBar.SetValue(metalReserve);
                 }
             }
+            iconMetal.GetComponent<Image>().color = new Color(0.5f, 0.92f, 1f);
 
-            
+
         }
         else
         {
@@ -363,6 +373,7 @@ public class PlayerController : MonoBehaviour
             {
                 metalVision = visionState;
             }
+            iconMetal.GetComponent<Image>().color = new Color(1f, 1f, 1f);
         }
 
         if (inputResetWeight > 0)
@@ -370,6 +381,7 @@ public class PlayerController : MonoBehaviour
             GetComponent<Rigidbody2D>().mass = normalMass + currentEquipmentMass;
             textCurrentMass.text = Mathf.Round(GetComponent<Rigidbody2D>().mass).ToString();
             inputResetWeight = 0;
+            iconWeight.GetComponent<Image>().color = new Color(1f, 1f, 1f);
             SoundManagerScript.playSound("weightPower");
         }
 
