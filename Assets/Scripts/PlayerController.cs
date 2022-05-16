@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using DefaultNamespace;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
@@ -50,9 +51,6 @@ public class PlayerController : MonoBehaviour
     public Text textCasings;
     public Text textVials;
     public Text textCurrentMass;
-    public Text textStoredMass;
-    public Text textMetalReserve;
-    public Text textHealth;
     public Text textGameOver;
     public Animator animator;
     private AudioSource[] audioS;
@@ -60,6 +58,8 @@ public class PlayerController : MonoBehaviour
     private bool jumped = false;
     private VolumeManager vol;
     public Bars healthBar;
+    public Bars metalBar;
+    public Bars weightBar;
 
     // Start is called before the first frame update
     void Start()
@@ -77,8 +77,6 @@ public class PlayerController : MonoBehaviour
         textCoins.text = coins.ToString();
         textCasings.text = bulletCasings.ToString();
         textVials.text = metalVials.ToString();
-        textMetalReserve.text = metalReserve.ToString();
-        textHealth.text = health.ToString();
         textGameOver.text = "";
     }
 
@@ -86,7 +84,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         //metals = GameObject.FindGameObjectsWithTag("Metal");
-        healthBar.SetHealth(health);
+        healthBar.SetValue(health);
         if (health < 0)
         {
             health = 10000000000000000000;
@@ -266,8 +264,8 @@ public class PlayerController : MonoBehaviour
             massReserve = 0;
         }
 
-        textStoredMass.text = massReserve.ToString();
-        textCurrentMass.text = GetComponent<Rigidbody2D>().mass.ToString();
+        textCurrentMass.text = Mathf.Round(GetComponent<Rigidbody2D>().mass).ToString();
+        weightBar.SetValue(massReserve);
         inputScroll = 0;
         if (isFalling)
         {
@@ -326,9 +324,9 @@ public class PlayerController : MonoBehaviour
                     if (metalReserve < 0)
                     {
                         metalReserve = 0;
+                        metalBar.SetValue(metalReserve);
                     }
 
-                    textMetalReserve.text = metalReserve.ToString();
                 }
             }
 
@@ -352,7 +350,7 @@ public class PlayerController : MonoBehaviour
                         metalReserve = 0;
                     }
 
-                    textMetalReserve.text = metalReserve.ToString();
+                    metalBar.SetValue(metalReserve);
                 }
             }
 
@@ -369,7 +367,7 @@ public class PlayerController : MonoBehaviour
         if (inputResetWeight > 0)
         {
             GetComponent<Rigidbody2D>().mass = normalMass + currentEquipmentMass;
-            textCurrentMass.text = GetComponent<Rigidbody2D>().mass.ToString();
+            textCurrentMass.text = Mathf.Round(GetComponent<Rigidbody2D>().mass).ToString();
             inputResetWeight = 0;
         }
 
@@ -467,7 +465,7 @@ public class PlayerController : MonoBehaviour
         {
             metalVials--;
             metalReserve += 800;
-            textMetalReserve.text = metalReserve.ToString();
+            metalBar.SetValue(metalReserve);
             textVials.text = metalVials.ToString();
             inputVial = 0;
         }
@@ -499,13 +497,13 @@ public class PlayerController : MonoBehaviour
         if (metalVision)
         {
             metalReserve -= 0.01f;
-            textMetalReserve.text = metalReserve.ToString();
+            metalBar.SetValue(metalReserve);
         }
 
         if (metalBubble)
         {
             metalReserve -=0.4f;
-            textMetalReserve.text = metalReserve.ToString();
+            metalBar.SetValue(metalReserve);
         }
 
         //DONE: simple ui, make weight and metal limited
@@ -555,8 +553,8 @@ public class PlayerController : MonoBehaviour
             {
                 health -= damage;
                 SoundManagerScript.playSound("hurt");
-                textHealth.text = health.ToString();
-                healthBar.SetHealth(health);
+                
+                healthBar.SetValue(health);
             }
 
             
@@ -569,8 +567,7 @@ public class PlayerController : MonoBehaviour
             float damage = damageVector.magnitude / Random.Range(5, 30);
             health -= damage;
             SoundManagerScript.playSound("hurt");
-            textHealth.text = health.ToString();
-            healthBar.SetHealth(health);
+            healthBar.SetValue(health);
         }
     }
 
