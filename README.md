@@ -2,24 +2,40 @@
  Mistborn-game
 
 Video demo: (link goes here)
+
 Play the game: (link goes here)
+
 (Sources at the end)
+
+
 
 Dear Wax,
 
 You are Waxillium Ladrian, a Twinborn and High Lord of House Ladrian on  the world of Scadrial. As a Twinborn, you are a Steel Allomancer and a Iron Ferruchemist. Your abilities are listed below:
 
+
 -A: Move Left
+
 -D: Move Right
+
 -W: Jump
+
 -RIGHT MOUSE CLICK: Fire Gun
+
 -LEFT MOUSE CLICK: Punch
+
 -SPACE: Metal Push (Allomancy)
+
 -MOUSE WHEEL SCROLL: Store/Draw Weight (Ferruchemy)
+
 -MOUSE WHEEL CLICK: Reset Weight (Ferruchemy)
+
 -R: Metal Vision (Allomancy)
+
 -F: Metal Push Shield (Allomancy)
+
 -E: Drop Coin/Casing
+
 -Q: Drink Metal Vial
 
 Some advice: Your enemies are challenging, and will kill you quick. Some even have Aluminun guns and bullets, and are immune to your Allomancy. Try to manage your resources well. You have some bullets, some coins, and a few vials to replenish your metal reserve. Your metal reserve is used up when using Allomancy, so be strategic when using these abilities. You can also store your weight using Ferruchemy, and become lighter temporarily. Later you can draw weight from this reserve and become heavier.
@@ -29,6 +45,8 @@ Be creative: Coins can be launched at enemies, or to push yourself off the groun
 Sincerely,
 
 -Your dearest and bestest friend Wayne
+
+
 
 
 
