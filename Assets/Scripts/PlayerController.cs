@@ -143,7 +143,7 @@ public class PlayerController : MonoBehaviour
             jumped = true;
             animator.SetBool("Falling", true);
         }
-
+        
         inputScroll += Input.GetAxis("Mouse ScrollWheel");
         inputSpace = Input.GetButton("Jump");
         sounds(1);
@@ -285,7 +285,6 @@ public class PlayerController : MonoBehaviour
         if (inputHorizontal != 0f && !isFalling && body.velocity.magnitude < maxSpeed)
         {
             body.AddForce(new Vector2(inputHorizontal * moveForce, 0f), ForceMode2D.Impulse);
-            SoundManagerScript.playSound("walk");
             if (body.velocity.magnitude > maxSpeed)
             {
                 body.velocity = Vector2.ClampMagnitude(body.velocity, maxSpeed);
@@ -354,7 +353,7 @@ public class PlayerController : MonoBehaviour
                 }
             }
 
-            SoundManagerScript.playSound("metalPower");
+            
         }
         else
         {
@@ -369,6 +368,7 @@ public class PlayerController : MonoBehaviour
             GetComponent<Rigidbody2D>().mass = normalMass + currentEquipmentMass;
             textCurrentMass.text = Mathf.Round(GetComponent<Rigidbody2D>().mass).ToString();
             inputResetWeight = 0;
+            SoundManagerScript.playSound("weightPower");
         }
 
         if (inputBullet > 0 && bullets > 0)
@@ -464,6 +464,7 @@ public class PlayerController : MonoBehaviour
         if (inputVial > 0 && metalVials > 0 && metalReserve < 1000)
         {
             metalVials--;
+            SoundManagerScript.playSound("pocionDrink");
             metalReserve += 800;
             metalBar.SetValue(metalReserve);
             textVials.text = metalVials.ToString();
