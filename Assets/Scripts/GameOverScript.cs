@@ -7,9 +7,12 @@ using UnityEngine.UI;
 
 public class GameOverScript : MonoBehaviour
 {
+    
     public String sceneName;
-    public void Setup()
+    public Text textGO; 
+    public void Setup(String textFinal)
     {
+        textGO.text = textFinal;
         gameObject.SetActive(true);
         
     }

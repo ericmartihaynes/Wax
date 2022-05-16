@@ -88,7 +88,7 @@ public class PlayerController : MonoBehaviour
 
     private void GameOver()
     {
-        gameOver.Setup();
+        gameOver.Setup("Game Over");
     }
     // Update is called once per frame
     void Update()

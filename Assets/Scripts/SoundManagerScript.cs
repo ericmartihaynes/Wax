@@ -53,6 +53,7 @@ public class SoundManagerScript : MonoBehaviour
                 audio.PlayOneShot(hitmarker);
                 break;
             case "death":
+                audio.volume = 0.5f;
                 audio.PlayOneShot(deathSound);
                 break;
             case "punch":
