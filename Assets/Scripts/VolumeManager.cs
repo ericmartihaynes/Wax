@@ -3,17 +3,11 @@ using UnityEngine;
 
 namespace DefaultNamespace
 {
-    public class VolumeManager
+    public class VolumeManager : MonoBehaviour
     {
-        private AudioSource audio;
-        public float volume = 1f;
-        
-        VolumeManager(AudioSource audio, float volume)
-        {
-            this.audio = audio;
-            this.volume = volume;
-            
-        }
+        public float volume { get; set; }
+
+
 
         public void updateVolume(float volume)
         {

@@ -69,10 +69,10 @@ public class PlayerController : MonoBehaviour
         enemies = GameObject.FindGameObjectsWithTag("Enemy");
         animator = GetComponent<Animator>();
         audioS = GetComponents<AudioSource>();
-        foreach (AudioSource audio in audioS)
+        /*foreach (AudioSource audio in audioS)
         {
             vol.volumenManager(audio);
-        }
+        }*/
         textBullets.text = bullets.ToString();
         textCoins.text = coins.ToString();
         textCasings.text = bulletCasings.ToString();
