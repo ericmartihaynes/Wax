@@ -385,20 +385,6 @@ public class PlayerController : MonoBehaviour
             textCasings.text = bulletCasings.ToString();
             inputBullet = 0;
             inputCoin = 0; //Dont know why but if I remove this random casing appears
-<<<<<<< Updated upstream
-            //animator.SetInteger("Walking", 0);
-            switch (angle) {
-                case float n when (0 < n && n < 16): animator.SetTrigger("shootLeft5"); break;
-                case float n when (16 < n && n <72): animator.SetTrigger("shootLeft4"); break;
-                case float n when (72 < n && n < 110): animator.SetTrigger("shootLeft3"); break;
-                case float n when (110 < n && n < 150): animator.SetTrigger("shootLeft2"); break;
-                case float n when (150 < n && n < 180): animator.SetTrigger("shootLeft1"); break;
-                case float n when (-16 < n && n < 0): animator.SetTrigger("shootRight5"); break;
-                case float n when (-72 < n && n < -16): animator.SetTrigger("shootRight4"); break;
-                case float n when (-110 < n && n < -72): animator.SetTrigger("shootRight3"); break;
-                case float n when (-150 < n && n < -110): animator.SetTrigger("shootRight2"); break;
-                case float n when (-180 < n && n < -150): animator.SetTrigger("shootRight1"); break;
-=======
             animator.SetInteger("Walking", 0);
             switch (angle)
             {
@@ -442,7 +428,6 @@ public class PlayerController : MonoBehaviour
                     print("");
                     animator.SetTrigger("shootRight1");
                     break;
->>>>>>> Stashed changes
             }
         }
 
