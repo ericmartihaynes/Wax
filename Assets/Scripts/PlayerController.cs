@@ -185,7 +185,7 @@ public class PlayerController : MonoBehaviour
             inputVial++;
         }
 
-        if (Input.GetKeyDown("c"))
+        if (Input.GetButtonDown("Fire2"))
         {
             inputPunch++;
         }
