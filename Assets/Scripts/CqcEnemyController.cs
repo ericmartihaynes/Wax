@@ -15,6 +15,7 @@ public class CqcEnemyController : MonoBehaviour
     private float moveForce;
     private bool isFalling = true;
     public Animator animator;
+    private bool dead = false;
 
     // Start is called before the first frame update
     void Start()
@@ -33,7 +34,10 @@ public class CqcEnemyController : MonoBehaviour
         Vector2 distance = this.transform.position - player.transform.position;
         if (enemyHealth < 0)
         {
-            this.gameObject.SetActive(false);
+            dead = true;
+            animator.SetTrigger("Dead");
+            StartCoroutine(deathCoroutine());
+            enemyHealth = 10000000000000000000;
         }
         if (distance.magnitude < 20 && player.GetComponent<PlayerController>().metalVision)
         {
@@ -59,7 +63,7 @@ public class CqcEnemyController : MonoBehaviour
         if (distance.magnitude < 18) {
             playerDetected = true; 
         }
-        if (punchCount > Random.Range(30, 60) && distance.magnitude < 1.5f)
+        if (punchCount > Random.Range(30, 60) && distance.magnitude < 1.5f && !dead)
         {
             playerDetected = true;
             Vector2 playerVector = player.GetComponent<Rigidbody2D>().position;
@@ -89,7 +93,7 @@ public class CqcEnemyController : MonoBehaviour
             punchCount++;
         }
 
-        if (playerDetected && distance.magnitude > 1.5f && isFalling == false)
+        if (playerDetected && distance.magnitude > 1.5f && isFalling == false && !dead)
         {
             int rightOrLeft;
             if (player.transform.position.x - this.transform.position.x < 0) { rightOrLeft = -1; }
@@ -128,5 +132,11 @@ public class CqcEnemyController : MonoBehaviour
         {
             isFalling = true;
         }
+    }
+
+    private IEnumerator deathCoroutine()
+    {
+        yield return new WaitForSeconds(1.5f);
+        this.gameObject.SetActive(false);
     }
 }

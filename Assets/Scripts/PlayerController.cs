@@ -492,13 +492,13 @@ public class PlayerController : MonoBehaviour
 
         if (metalVision)
         {
-            metalReserve -= 0.005f;
+            metalReserve -= 0.01f;
             textMetalReserve.text = metalReserve.ToString();
         }
 
         if (metalBubble)
         {
-            metalReserve -= 0.1f;
+            metalReserve -=0.4f;
             textMetalReserve.text = metalReserve.ToString();
         }
 
@@ -536,18 +536,23 @@ public class PlayerController : MonoBehaviour
         {
             Rigidbody2D rb = collision.gameObject.GetComponent<Rigidbody2D>();
             Vector2 damageVector = rb.velocity * rb.mass - body.velocity * body.mass;
-            float damage = damageVector.magnitude / Random.Range(5, 30);
-            if (damage > 10)
+            float damage = damageVector.magnitude / Random.Range(15, 30);
+            if (rb.mass < 1.1f)
+            {
+                Destroy(collision.gameObject, 0.1f);
+            }
+            else {
+                damage = damage / 10;
+            }
+
+            if (damage > 5)
             {
                 health -= damage;
                 SoundManagerScript.playSound("hurt");
                 textHealth.text = health.ToString();
             }
 
-            if (rb.mass < 1.1f)
-            {
-                Destroy(collision.gameObject, 0.1f);
-            }
+            
         }
 
         if (collision.gameObject.tag == "EnemyPunch")

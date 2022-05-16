@@ -13,6 +13,7 @@ public class StationaryEnemyController : MonoBehaviour
     private GameObject player;
     private bool playerDetected = false;
     public Animator animator;
+    private bool dead = false;
 
     // Start is called before the first frame update
     void Start()
@@ -30,7 +31,10 @@ public class StationaryEnemyController : MonoBehaviour
         Vector2 distance = this.transform.position - player.transform.position;
         if (enemyHealth < 0)
         {
-            this.gameObject.SetActive(false);
+            dead = true;
+            animator.SetTrigger("Dead");
+            StartCoroutine(deathCoroutine());
+            enemyHealth = 10000000000000000000;
         }
         if (distance.magnitude < 20 && player.GetComponent<PlayerController>().metalVision)
         {
@@ -53,7 +57,7 @@ public class StationaryEnemyController : MonoBehaviour
     {
 
         Vector2 distance = this.transform.position - player.transform.position;
-        if (shootCount > Random.Range(30, 200) && distance.magnitude < 18)
+        if (shootCount > Random.Range(30, 200) && distance.magnitude < 18 && !dead)
         {
             playerDetected = true;
             Vector2 playerVector = player.GetComponent<Rigidbody2D>().position;
@@ -113,5 +117,11 @@ public class StationaryEnemyController : MonoBehaviour
         }
     }
 
-    
+    private IEnumerator deathCoroutine()
+    {
+        yield return new WaitForSeconds(1.5f);
+        this.gameObject.SetActive(false);
+    }
+
+
 }
