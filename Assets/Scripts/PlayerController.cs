@@ -93,7 +93,7 @@ public class PlayerController : MonoBehaviour
         else { iconBubble.GetComponent<Image>().color = new Color(1f, 1f, 1f); }
 
         healthBar.SetValue(health);
-        if (health < 0)
+        if (health < 0 || (this.transform.position.y < -50) && (this.transform.position.y > -51))
         {
             health = 10000000000000000000;
             SoundManagerScript.playSound("death");
