@@ -253,6 +253,10 @@ MonoBehaviour:
   healthBar: {fileID: 0}
   metalBar: {fileID: 0}
   weightBar: {fileID: 0}
+  iconVision: {fileID: 7556162854749208720, guid: 665007b88ea83dd42af9ef4601c25cd0, type: 3}
+  iconBubble: {fileID: 0}
+  iconMetal: {fileID: 0}
+  iconWeight: {fileID: 0}
 --- !u!61 &2541787514278223381
 BoxCollider2D:
   m_ObjectHideFlags: 0
