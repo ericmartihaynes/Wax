@@ -8,7 +8,7 @@ public class SoundManagerScript : MonoBehaviour
     private static AudioClip playerShot, dropCasing, dropCoin, punch, hitmarker, deathSound, hurtSound, jump, walk, metalPower;
     static AudioSource audio;
 
-    private VolumeManager vol;
+  //  private VolumeManager vol;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,9 +22,10 @@ public class SoundManagerScript : MonoBehaviour
         metalPower = Resources.Load<AudioClip>("metal-power");
         walk = Resources.Load<AudioClip>("walk");
         jump = Resources.Load<AudioClip>("jump");
-
+        
         audio = GetComponent<AudioSource>();
-        vol.volumenManager(audio);
+        /*vol = vol.GetComponent<VolumeManager>();
+        vol.volumenManager(audio);*/
     }
 
     // Update is called once per frame

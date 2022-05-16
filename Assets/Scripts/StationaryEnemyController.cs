@@ -107,12 +107,12 @@ public class StationaryEnemyController : MonoBehaviour
             Rigidbody2D rb = collision.gameObject.GetComponent<Rigidbody2D>();
             Vector2 damageVector = rb.velocity * rb.mass - body.velocity * body.mass;
             enemyHealth -= damageVector.magnitude / Random.Range(5, 30);
+            SoundManagerScript.playSound("hitmarker");
             Debug.Log(enemyHealth.ToString());
             if (rb.mass < 1.1f)
             {
                 Destroy(collision.gameObject, 0.1f);
             }
-
 
         }
     }

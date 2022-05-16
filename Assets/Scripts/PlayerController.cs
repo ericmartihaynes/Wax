@@ -58,7 +58,7 @@ public class PlayerController : MonoBehaviour
     private AudioSource[] audioS;
     private int movingDirection;
     private bool jumped = false;
-    private VolumeManager vol;
+    //private VolumeManager vol;
 
     // Start is called before the first frame update
     void Start()
@@ -68,10 +68,10 @@ public class PlayerController : MonoBehaviour
         enemies = GameObject.FindGameObjectsWithTag("Enemy");
         animator = GetComponent<Animator>();
         audioS = GetComponents<AudioSource>();
-        foreach (AudioSource audio in audioS)
+        /*foreach (AudioSource audio in audioS)
         {
             vol.volumenManager(audio);
-        }
+        }*/
         textBullets.text = bullets.ToString();
         textCoins.text = coins.ToString();
         textCasings.text = bulletCasings.ToString();
