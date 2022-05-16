@@ -60,6 +60,7 @@ public class StationaryEnemyController : MonoBehaviour
             playerVector.x = playerVector.x + Random.Range(-1.5f, 1.5f);
             playerVector.y = playerVector.y + Random.Range(-1.5f, 1.5f);
             Vector2 playerToMouseVector = (playerVector - body.position).normalized;
+            playerToMouseVector = playerToMouseVector * 1.1f;
             float angle = Vector2.SignedAngle(new Vector2(0, 1), playerToMouseVector);
             GameObject newBullet = Instantiate(bulletPrefab, body.position + playerToMouseVector, Quaternion.identity);
             newBullet.transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(playerVector.y - transform.position.y, playerVector.x - transform.position.x) * Mathf.Rad2Deg);
