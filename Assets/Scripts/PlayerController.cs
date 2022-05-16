@@ -60,6 +60,7 @@ public class PlayerController : MonoBehaviour
     public Bars healthBar;
     public Bars metalBar;
     public Bars weightBar;
+    public GameObject iconVision;
 
     // Start is called before the first frame update
     void Start()
@@ -83,7 +84,8 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //metals = GameObject.FindGameObjectsWithTag("Metal");
+        if (metalVision) { iconVision.GetComponent<Image>().color = new Color(0.5f, 0.92f, 1f); }
+        else { iconVision.GetComponent<Image>().color = new Color(1f, 1f, 1f); }
         healthBar.SetValue(health);
         if (health < 0)
         {
