@@ -14,6 +14,7 @@ public class CqcEnemyController : MonoBehaviour
     private bool playerDetected = false;
     private float moveForce;
     private bool isFalling = true;
+    public Animator animator;
 
     // Start is called before the first frame update
     void Start()
@@ -22,6 +23,7 @@ public class CqcEnemyController : MonoBehaviour
         body = GetComponent<Rigidbody2D>();
         player = GameObject.FindGameObjectWithTag("Player");
         moveForce = ((0.75f * body.mass) + 20f) / 4;
+        animator = GetComponent<Animator>();
 
     }
 
@@ -62,10 +64,22 @@ public class CqcEnemyController : MonoBehaviour
             playerDetected = true;
             Vector2 playerVector = player.GetComponent<Rigidbody2D>().position;
             Vector2 playerToMouseVector = (playerVector - body.position).normalized;
+            float angle = Vector2.SignedAngle(new Vector2(0, 1), playerToMouseVector);
             GameObject newPunch = Instantiate(punchPrefab, body.position + playerToMouseVector, Quaternion.identity);
             newPunch.transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(playerVector.y - transform.position.y, playerVector.x - transform.position.x) * Mathf.Rad2Deg);
             newPunch.GetComponent<Rigidbody2D>().AddForce(playerToMouseVector * 30, ForceMode2D.Impulse);
             Destroy(newPunch, 0.075f);
+            switch (angle)
+            {
+                case float n when (0 < n && n < 180):
+
+                    animator.SetTrigger("punchLeft");
+                    break;
+                case float n when (-180 < n && n < 0):
+
+                    animator.SetTrigger("punchRight");
+                    break;
+            }
             SoundManagerScript.playSound("punch");
 
             punchCount = 0;
@@ -80,6 +94,7 @@ public class CqcEnemyController : MonoBehaviour
             int rightOrLeft;
             if (player.transform.position.x - this.transform.position.x < 0) { rightOrLeft = -1; }
             else { rightOrLeft = 1; }
+            animator.SetInteger("Walking", rightOrLeft);
             body.AddForce(new Vector2(rightOrLeft * moveForce, 0f), ForceMode2D.Impulse);
         }
     }

@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 5045077065436247493}
   - component: {fileID: 7084975565489010636}
   - component: {fileID: -6823759067866399977}
+  - component: {fileID: -5339704889967902395}
   m_Layer: 0
   m_Name: StationaryEnemy
   m_TagString: Enemy
@@ -133,7 +134,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &5045077065436247493
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -271,3 +272,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 3636281404753338083, guid: efe02fb3d65e85e4c8f6062b8ad743f0, type: 3}
+--- !u!95 &-5339704889967902395
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5045077065436247503}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: ac0f06d0182b1374cae9a0002370ab53, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

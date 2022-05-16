@@ -371,7 +371,7 @@ public class PlayerController : MonoBehaviour
         {
             Vector2 coinVector = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector2 playerToMouseVector = (coinVector - body.position).normalized;
-            float angle = Vector2.SignedAngle(body.position, coinVector);
+            float angle = Vector2.SignedAngle(new Vector2(0,1), playerToMouseVector);
             GameObject newBullet = Instantiate(bulletPrefab, body.position + playerToMouseVector, Quaternion.identity);
             newBullet.transform.rotation = Quaternion.Euler(0, 0,
                 Mathf.Atan2(coinVector.y - transform.position.y, coinVector.x - transform.position.x) * Mathf.Rad2Deg);
@@ -385,47 +385,47 @@ public class PlayerController : MonoBehaviour
             textCasings.text = bulletCasings.ToString();
             inputBullet = 0;
             inputCoin = 0; //Dont know why but if I remove this random casing appears
-            animator.SetInteger("Walking", 0);
+            Debug.Log(angle.ToString());
             switch (angle)
             {
                 case float n when (0 < n && n < 16):
-                    print("");
+                    
                     animator.SetTrigger("shootLeft5");
                     break;
-                case float n when (16 < n && n < 72):
-                    print("");
+                case float n when (16 < n && n < 70):
+                    
                     animator.SetTrigger("shootLeft4");
                     break;
-                case float n when (72 < n && n < 110):
-                    print("");
+                case float n when (70 < n && n < 110):
+                    
                     animator.SetTrigger("shootLeft3");
                     break;
                 case float n when (110 < n && n < 150):
-                    print("");
+                    
                     animator.SetTrigger("shootLeft2");
                     break;
                 case float n when (150 < n && n < 180):
-                    print("");
+                    
                     animator.SetTrigger("shootLeft1");
                     break;
                 case float n when (-16 < n && n < 0):
-                    print("");
+                    
                     animator.SetTrigger("shootRight5");
                     break;
-                case float n when (-72 < n && n < -16):
-                    print("");
+                case float n when (-70 < n && n < -16):
+                    
                     animator.SetTrigger("shootRight4");
                     break;
-                case float n when (-110 < n && n < -72):
-                    print("");
+                case float n when (-110 < n && n < -70):
+                    
                     animator.SetTrigger("shootRight3");
                     break;
                 case float n when (-150 < n && n < -110):
-                    print("");
+                    
                     animator.SetTrigger("shootRight2");
                     break;
                 case float n when (-180 < n && n < -150):
-                    print("");
+                    
                     animator.SetTrigger("shootRight1");
                     break;
             }
@@ -470,12 +470,23 @@ public class PlayerController : MonoBehaviour
         {
             Vector2 coinVector = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector2 playerToMouseVector = (coinVector - body.position).normalized / 2;
+            float angle = Vector2.SignedAngle(new Vector2(0, 1), playerToMouseVector);
             GameObject newPunch = Instantiate(punchPrefab, body.position + playerToMouseVector, Quaternion.identity);
-            newPunch.transform.rotation = Quaternion.Euler(0, 0,
-                Mathf.Atan2(coinVector.y - transform.position.y, coinVector.x - transform.position.x) * Mathf.Rad2Deg);
+            newPunch.transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(coinVector.y - transform.position.y, coinVector.x - transform.position.x) * Mathf.Rad2Deg);
             newPunch.GetComponent<Rigidbody2D>().AddForce(playerToMouseVector * (currentMass / 3), ForceMode2D.Impulse);
             Destroy(newPunch, 0.085f);
-            SoundManagerScript.playSound("punch");
+            switch (angle)
+            {
+                case float n when (0 < n && n < 180):
+
+                    animator.SetTrigger("punchLeft");
+                    break;
+                case float n when (-180 < n && n < 0):
+
+                    animator.SetTrigger("punchRight");
+                    break;
+            }
+                    SoundManagerScript.playSound("punch");
             inputPunch = 0;
         }
 

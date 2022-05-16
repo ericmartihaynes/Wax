@@ -12,6 +12,7 @@ public class StationaryEnemyController : MonoBehaviour
     public GameObject bulletPrefab;
     private GameObject player;
     private bool playerDetected = false;
+    public Animator animator;
 
     // Start is called before the first frame update
     void Start()
@@ -19,6 +20,7 @@ public class StationaryEnemyController : MonoBehaviour
         line = GetComponent<LineRenderer>();
         body = GetComponent<Rigidbody2D>();
         player = GameObject.FindGameObjectWithTag("Player");
+        animator = GetComponent<Animator>();
 
     }
 
@@ -58,10 +60,24 @@ public class StationaryEnemyController : MonoBehaviour
             playerVector.x = playerVector.x + Random.Range(-1.5f, 1.5f);
             playerVector.y = playerVector.y + Random.Range(-1.5f, 1.5f);
             Vector2 playerToMouseVector = (playerVector - body.position).normalized;
+            float angle = Vector2.SignedAngle(new Vector2(0, 1), playerToMouseVector);
             GameObject newBullet = Instantiate(bulletPrefab, body.position + playerToMouseVector, Quaternion.identity);
             newBullet.transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(playerVector.y - transform.position.y, playerVector.x - transform.position.x) * Mathf.Rad2Deg);
             newBullet.GetComponent<Rigidbody2D>().AddForce(playerToMouseVector * 300, ForceMode2D.Impulse);
             Destroy(newBullet, 0.3f);
+            switch (angle)
+            {
+                case float n when (0 < n && n < 16): animator.SetTrigger("shootLeft5"); break;
+                case float n when (16 < n && n < 72): animator.SetTrigger("shootLeft4"); break;
+                case float n when (72 < n && n < 110): animator.SetTrigger("shootLeft3"); break;
+                case float n when (110 < n && n < 150): animator.SetTrigger("shootLeft2"); break;
+                case float n when (150 < n && n < 180): animator.SetTrigger("shootLeft1"); break;
+                case float n when (-16 < n && n < 0): animator.SetTrigger("shootRight5"); break;
+                case float n when (-72 < n && n < -16): animator.SetTrigger("shootRight4"); break;
+                case float n when (-110 < n && n < -72): animator.SetTrigger("shootRight3"); break;
+                case float n when (-150 < n && n < -110): animator.SetTrigger("shootRight2"); break;
+                case float n when (-180 < n && n < -150): animator.SetTrigger("shootRight1"); break;
+            }
 
 
             shootCount = 0;

@@ -984,14 +984,14 @@ PrefabInstance:
     - target: {fileID: -2414490368073894012, guid: 9437c6ebdafdfb448882a6199a26d47a, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: b4d267257fd85494490e2274c576dbf9, type: 2}
+      objectReference: {fileID: 9100000, guid: ac0f06d0182b1374cae9a0002370ab53, type: 2}
     - target: {fileID: 5646291020591576726, guid: 9437c6ebdafdfb448882a6199a26d47a, type: 3}
       propertyPath: m_RootOrder
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5646291020591576726, guid: 9437c6ebdafdfb448882a6199a26d47a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 13.592312
+      value: 21.67
       objectReference: {fileID: 0}
     - target: {fileID: 5646291020591576726, guid: 9437c6ebdafdfb448882a6199a26d47a, type: 3}
       propertyPath: m_LocalPosition.y

@@ -62,7 +62,7 @@ public class EnemyController : MonoBehaviour
             playerVector.x = playerVector.x + Random.Range(-1.5f, 1.5f);
             playerVector.y = playerVector.y + Random.Range(-1.5f, 1.5f);
             Vector2 playerToMouseVector = (playerVector - body.position).normalized;
-            float angle = Vector2.SignedAngle(body.position, playerVector);
+            float angle = Vector2.SignedAngle(new Vector2(0, 1), playerToMouseVector);
             GameObject newBullet = Instantiate(bulletPrefab, body.position + playerToMouseVector, Quaternion.identity);
             newBullet.transform.rotation = Quaternion.Euler(0, 0, Mathf.Atan2(playerVector.y - transform.position.y, playerVector.x - transform.position.x) * Mathf.Rad2Deg);
             newBullet.GetComponent<Rigidbody2D>().AddForce(playerToMouseVector * 300, ForceMode2D.Impulse);
@@ -92,7 +92,7 @@ public class EnemyController : MonoBehaviour
             int rightOrLeft;
             if (player.transform.position.x - this.transform.position.x < 0) { rightOrLeft = -1; }
             else { rightOrLeft = 1; }
-            //animator.SetInteger("Walking", rightOrLeft);
+            animator.SetInteger("Walking", rightOrLeft);
             body.AddForce(new Vector2(rightOrLeft * moveForce, 0f), ForceMode2D.Impulse);
         }
         //else { animator.SetInteger("Walking", 0); }
