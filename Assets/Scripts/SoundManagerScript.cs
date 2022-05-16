@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class SoundManagerScript : MonoBehaviour
 {
-    private static AudioClip playerShot, dropCasing, dropCoin, punch, hitmarker, deathSound, hurtSound, jump, walk, metalPower;
+    private static AudioClip playerShot, dropCasing, dropCoin, punch, hitmarker, deathSound, hurtSound, jump, weightPower, pocionDrink;
     static AudioSource audio;
 
   //  private VolumeManager vol;
@@ -19,8 +19,8 @@ public class SoundManagerScript : MonoBehaviour
         hitmarker = Resources.Load<AudioClip>("hitmarker");
         deathSound = Resources.Load<AudioClip>("death-sound");
         hurtSound = Resources.Load<AudioClip>("hurtSound");
-        metalPower = Resources.Load<AudioClip>("metal-power");
-        walk = Resources.Load<AudioClip>("walk");
+        pocionDrink = Resources.Load<AudioClip>("pocionDrink");
+        weightPower = Resources.Load<AudioClip>("weight-power");
         jump = Resources.Load<AudioClip>("jump");
         
         audio = GetComponent<AudioSource>();
@@ -60,6 +60,12 @@ public class SoundManagerScript : MonoBehaviour
                 break;
             case "jump":
                 audio.PlayOneShot(jump);
+                break;
+            case "weightPower":
+                audio.PlayOneShot(weightPower);
+                break;
+            case "pocionDrink":
+                audio.PlayOneShot(pocionDrink);
                 break;
         }
     }
