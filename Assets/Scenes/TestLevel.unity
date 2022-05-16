@@ -1067,9 +1067,9 @@ MonoBehaviour:
   m_HandleRect: {fileID: 0}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 1000
+  m_MaxValue: 100
   m_WholeNumbers: 0
-  m_Value: 1000
+  m_Value: 100
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -2373,7 +2373,7 @@ MonoBehaviour:
   textHealth: {fileID: 813543896}
   textGameOver: {fileID: 329266755}
   animator: {fileID: 2126077005}
-  bars: {fileID: 0}
+  healthBar: {fileID: 986831208}
 --- !u!61 &2126077004
 BoxCollider2D:
   m_ObjectHideFlags: 0

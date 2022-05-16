@@ -86,7 +86,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         //metals = GameObject.FindGameObjectsWithTag("Metal");
-
+        healthBar.SetHealth(health);
         if (health < 0)
         {
             health = 10000000000000000000;
