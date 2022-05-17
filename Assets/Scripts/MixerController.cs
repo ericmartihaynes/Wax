@@ -4,9 +4,9 @@ using UnityEngine;
 using UnityEngine.Audio;
 public class MixerController : MonoBehaviour
 {
-    public AudioMixer audmix;
-    // Start is called before the first frame update
-    public void SetVolume(float sliderValue) {
-        audmix.SetFloat("Master", Mathf.Log10(sliderValue) * 20);
+    [SerializeField] private AudioMixer myAudioMixer;
+    public void SetVolume (float sliderValue)
+    {
+        myAudioMixer.SetFloat("MasterVolume", Mathf.Log10(sliderValue)*20);
     }
 }
