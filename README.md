@@ -1,5 +1,5 @@
 # Wax
- Mistborn-game
+ Mistborn-game by Eric Marti Haynes & Javier Renero Balgañón
 
 Video demo: https://www.youtube.com/watch?v=zTfSOmW7c7M
 
