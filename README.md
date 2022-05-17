@@ -1,7 +1,7 @@
 # Wax
  Mistborn-game
 
-Video demo: (link goes here)
+Video demo: https://www.youtube.com/watch?v=zTfSOmW7c7M
 
 Play the game: https://ericmartihaynes.github.io/Wax-play/ (Use fullscreen)
 
