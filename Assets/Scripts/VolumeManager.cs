@@ -1,5 +1,4 @@
-﻿using Unity.QuickSearch;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace DefaultNamespace
 {
