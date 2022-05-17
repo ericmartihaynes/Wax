@@ -3,7 +3,7 @@
 
 Video demo: (link goes here)
 
-Play the game: (link goes here)
+Play the game: https://ericmartihaynes.github.io/Wax-play/ (Use fullscreen)
 
 (Sources at the end)
 
